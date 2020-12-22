@@ -1,2 +1,3 @@
 # lru-simple
-Simple LRU 
+simple lru algorithm impl, see more in [lru](./doc/lru.md)
+.

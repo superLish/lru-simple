@@ -8,3 +8,15 @@ edition = "2018"
 
 [dependencies]
 log = "0.4"
+
+
+[[example]]
+name = "time"
+path = "example/time.rs"
+
+[[example]]
+name = "simple"
+path = "example/simple.rs"
+
+[dev-dependencies]
+simple_logger = "1.0"

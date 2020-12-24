@@ -11,51 +11,14 @@
 extern crate log;
 
 mod lru_time;
+mod lru_double_list;
 
 pub use lru_time::LruCache1;
 
 pub trait Lru<K, V> {
-    // fn new(cap: usize) -> Self;
     fn put(&mut self, k: K, v: V) -> Option<V>;
     fn get(&mut self, k: &K) -> Option<&V>;
     fn len(&self) -> usize;
     fn clear(&mut self);
 }
 
-
-// pub struct LruCache<T> {
-//
-// }
-//
-// impl<T> LruCache<T> {
-//
-//     //
-//     pub fn new(capacity: usize) -> Self {
-//         Self {
-//
-//         }
-//     }
-//
-//
-// }
-
-
-
-
-
-
-
-// fn generate_lru_cache(cap: usize) -> Box<dyn Lru<K, V>> {
-//     let cache = LruCache1::new(cap);
-//     Box::new(cache)
-// }
-
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}

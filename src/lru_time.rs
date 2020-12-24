@@ -1,5 +1,5 @@
 //! 最简单的方式实现，为每个缓存数据添加一个时间戳，用来记录最近一次访问的时间，当缓存满了的时候，淘汰数据时遍历所有缓存数据，选择时间戳最老的那个淘汰掉。
-
+//! 这种实现的弊端是put操作O(n)，且需要额外空间保存时间数据
 use std::time::{Instant, Duration};
 use std::collections::HashMap;
 use std::hash::Hash;
@@ -51,6 +51,7 @@ impl<K: Hash + Eq + Clone + Debug, V: Debug> LruCache1<K, V> {
 }
 
 impl<K: Hash + Eq + Clone + Debug, V: Debug> Lru<K,V> for LruCache1<K,V> {
+
     fn put(&mut self, k: K, v: V) -> Option<V> {
         assert!(self.cache.len() <= self.capacity);
 

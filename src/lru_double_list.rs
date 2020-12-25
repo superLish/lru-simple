@@ -1,15 +1,12 @@
-// 双向链表实现思路： 每当新插入或者访问数据，将数据放到链表头部，当数据满了的时候，从链表尾部删除数据。
-// 哈希表+双向链表实现   主要思路是在双向链表的实现基础上，增加一个哈希表，用于索引key，使得插入和删除的复杂度降低到O(1)。
-// 具体一点就是，哈希表的K可以认为是一个索引，V 是一个双向链表，每个V都有前驱节点和后驱节点的指针。
-
-
+//! 双向链表实现思路： 每当新插入或者访问数据，将数据放到链表头部，当数据满了的时候，从链表尾部删除数据。
+//! 哈希表+双向链表实现   主要思路是在双向链表的实现基础上，增加一个哈希表，用于索引key，使得插入和删除的复杂度降低到O(1)。
+//! 具体一点就是，哈希表的K可以认为是一个索引，V 是一个双向链表，每个V都有前驱节点和后驱节点的指针。
 
 use std::mem::MaybeUninit;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::collections::HashMap;
 use crate::Lru;
-use std::borrow::BorrowMut;
 
 
 #[derive(Debug)]
@@ -38,7 +35,6 @@ impl<K: Hash + Eq + Clone + Debug, V: Debug> Entry<K, V> {
             next: std::ptr::null_mut(),
         }
     }
-
 }
 
 
@@ -70,7 +66,7 @@ impl<K: Hash + Eq + Clone + Debug, V: Debug> LruCache2<K, V> {
     fn get_mut(&mut self, k: &K) -> Option<&mut V> {
         // get后，如果key存在，则将key移到head后第一个节点
         if let Some(entry) = self.map.get_mut(k) {
-            let mut value = &mut entry.v;
+            let value = &mut entry.v;
             let value_unwrap = unsafe {
                &mut *value.as_mut_ptr()
             };
@@ -136,10 +132,8 @@ impl<K: Hash + Eq + Clone + Debug, V: Debug> Lru<K, V> for LruCache2<K, V> {
         }
 
         info!("put <{:?}, {:?}>, insert new value.", k, new_value);
-        let mut entry = Box::new(Entry::new(k.clone(), v));
-        let new_ptr = unsafe {
-            Box::into_raw(entry)
-        };
+        let entry = Box::new(Entry::new(k.clone(), v));
+        let new_ptr = Box::into_raw(entry);
 
         unsafe {
             (*(*self.head).next).prev = new_ptr;
@@ -203,7 +197,6 @@ impl<K: Hash + Eq + Clone + Debug, V: Debug> Lru<K, V> for LruCache2<K, V> {
 #[cfg(test)]
 mod tests {
     use super::*;
-
 
     #[test]
     fn capacity() {

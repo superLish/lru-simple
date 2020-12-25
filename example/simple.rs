@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate log;
 
-use lru_simple::LruCache1;
+use lru_simple::{LruCache1, LruCache2};
 use lru_simple::Lru;
 use std::hash::Hash;
 use std::fmt::Debug;
@@ -14,6 +14,15 @@ fn main() {
     cache.put(2, "two");
     cache.put(3, "three");
     cache.put(4, "four");
+
+    info!("cache len = {}", cache.len());
+
+    let v1 = cache.get(&1);
+    info!("v1 = {:?}", v1);
+    let v2 = cache.get(&2);
+    info!("v2 = {:?}", v2);
+    cache.put(5, "five");
+
 }
 
 
@@ -24,7 +33,7 @@ struct Cache<K: Hash + Eq + Clone + Debug + 'static, V: Debug + 'static> {
 impl<K: Hash + Eq + Clone + Debug + 'static, V: Debug + 'static> Cache<K, V> {
     pub fn new(cap: usize) -> Self {
         Cache {
-            cache: Box::new(LruCache1::new(cap)),
+            cache: Box::new(LruCache2::new(cap)),
         }
     }
 

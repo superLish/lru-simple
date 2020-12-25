@@ -14,6 +14,7 @@ mod lru_time;
 mod lru_double_list;
 
 pub use lru_time::LruCache1;
+pub use lru_double_list::LruCache2;
 
 pub trait Lru<K, V> {
     fn put(&mut self, k: K, v: V) -> Option<V>;
